@@ -1,15 +1,15 @@
 package com.burakkolay.rentacar.business.concretes;
 
 import com.burakkolay.rentacar.business.abstracts.BrandService;
-import com.burakkolay.rentacar.entities.concretes.Brand;
-import com.burakkolay.rentacar.repository.abstracts.BrandRepository;
+import com.burakkolay.rentacar.entities.Brand;
+import com.burakkolay.rentacar.repository.BrandRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class BrandManager implements BrandService {
-    BrandRepository brandRepository;
+    private final BrandRepository brandRepository;
 
     public BrandManager(BrandRepository brandRepository) {
         this.brandRepository = brandRepository;
@@ -17,26 +17,32 @@ public class BrandManager implements BrandService {
 
     @Override
     public List<Brand> getAll() {
-        return brandRepository.getAll();
+        return brandRepository.findAll();
     }
 
     @Override
     public Brand getById(int id) {
-        return brandRepository.getById(id);
+        checkIfBrandExists(id);
+        return brandRepository.findById(id).orElseThrow();
     }
 
     @Override
     public Brand add(Brand brand) {
-        return brandRepository.add(brand);
+        return brandRepository.save(brand);
     }
 
     @Override
     public Brand update(int id, Brand brand) {
-        return brandRepository.update(id,brand);
+        brand.setId(id);
+        return brandRepository.save(brand);
     }
 
     @Override
     public void delete(int id) {
-        brandRepository.delete(id);
+        brandRepository.deleteById(id);
+    }
+
+    private void checkIfBrandExists(int id){
+        if(!brandRepository.existsById(id)) throw new RuntimeException("Marka Bulunamadı");
     }
 }

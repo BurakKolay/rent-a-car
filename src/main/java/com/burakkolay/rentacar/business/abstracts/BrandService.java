@@ -1,6 +1,6 @@
 package com.burakkolay.rentacar.business.abstracts;
 
-import com.burakkolay.rentacar.entities.concretes.Brand;
+import com.burakkolay.rentacar.entities.Brand;
 
 import java.util.List;
 

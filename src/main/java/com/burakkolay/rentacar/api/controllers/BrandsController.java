@@ -1,7 +1,7 @@
 package com.burakkolay.rentacar.api.controllers;
 
 import com.burakkolay.rentacar.business.abstracts.BrandService;
-import com.burakkolay.rentacar.entities.concretes.Brand;
+import com.burakkolay.rentacar.entities.Brand;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,5 +48,4 @@ public class BrandsController {
     public void delete(@PathVariable int id){
         brandService.delete(id);
     }
-
 }
