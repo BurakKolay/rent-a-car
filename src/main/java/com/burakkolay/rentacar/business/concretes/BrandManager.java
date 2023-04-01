@@ -1,48 +1,79 @@
 package com.burakkolay.rentacar.business.concretes;
 
 import com.burakkolay.rentacar.business.abstracts.BrandService;
-import com.burakkolay.rentacar.entities.Brand;
+import com.burakkolay.rentacar.business.dto.requests.create.CreateBrandRequest;
+import com.burakkolay.rentacar.business.dto.requests.update.UpdateBrandRequest;
+import com.burakkolay.rentacar.business.dto.response.create.CreateBrandResponse;
+import com.burakkolay.rentacar.business.dto.response.get.GetAllBrandsResponse;
+import com.burakkolay.rentacar.business.dto.response.get.GetBrandResponse;
+import com.burakkolay.rentacar.business.dto.response.update.UpdateBrandResponse;
+import com.burakkolay.rentacar.entities.concretes.Brand;
 import com.burakkolay.rentacar.repository.BrandRepository;
+import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class BrandManager implements BrandService {
-    private final BrandRepository brandRepository;
+    private final BrandRepository repository;
+    private final ModelMapper mapper;
 
-    public BrandManager(BrandRepository brandRepository) {
-        this.brandRepository = brandRepository;
+    @Override
+    public List<GetAllBrandsResponse> getAll() {
+        List<Brand> brands = repository.findAll();
+
+        return brands
+                .stream()
+                .map(brand -> mapper.map(brand, GetAllBrandsResponse.class))
+                .toList();
     }
 
     @Override
-    public List<Brand> getAll() {
-        return brandRepository.findAll();
-    }
-
-    @Override
-    public Brand getById(int id) {
+    public GetBrandResponse getById(int id) {
         checkIfBrandExists(id);
-        return brandRepository.findById(id).orElseThrow();
+        Brand brand = repository.findById(id).orElseThrow();
+        return mapper.map(brand, GetBrandResponse.class);
     }
 
     @Override
-    public Brand add(Brand brand) {
-        return brandRepository.save(brand);
+    public CreateBrandResponse add(CreateBrandRequest request) {
+//        Brand brand = new Brand();
+//        brand.setName(request.getName());
+//        repository.save(brand);
+//
+//        CreateBrandResponse response = new CreateBrandResponse();
+//        response.setId(brand.getId());
+//        response.setName(brand.getName());
+//
+//        return response;
+        Brand brand = mapper.map(request, Brand.class);
+        brand.setId(0);
+        repository.save(brand);
+        return mapper.map(brand, CreateBrandResponse.class);
     }
 
     @Override
-    public Brand update(int id, Brand brand) {
-        brand.setId(id);
-        return brandRepository.save(brand);
+    public UpdateBrandResponse update(int id, UpdateBrandRequest request) {
+        checkIfBrandExists(id);
+
+        Brand brand = repository.findById(id).orElseThrow();
+        brand.setName(request.getName());
+        repository.save(brand);
+        return mapper.map(brand, UpdateBrandResponse.class);
     }
 
     @Override
     public void delete(int id) {
-        brandRepository.deleteById(id);
+        checkIfBrandExists(id);
+        repository.deleteById(id);
     }
 
-    private void checkIfBrandExists(int id){
-        if(!brandRepository.existsById(id)) throw new RuntimeException("Marka Bulunamadı");
+    // Business rules
+
+    private void checkIfBrandExists(int id) {
+        if (!repository.existsById(id)) throw new RuntimeException("No such a brand!");
     }
 }

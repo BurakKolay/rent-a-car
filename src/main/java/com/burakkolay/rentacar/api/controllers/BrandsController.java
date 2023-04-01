@@ -1,51 +1,49 @@
 package com.burakkolay.rentacar.api.controllers;
 
 import com.burakkolay.rentacar.business.abstracts.BrandService;
-import com.burakkolay.rentacar.entities.Brand;
+import com.burakkolay.rentacar.business.dto.requests.create.CreateBrandRequest;
+import com.burakkolay.rentacar.business.dto.requests.update.UpdateBrandRequest;
+import com.burakkolay.rentacar.business.dto.response.create.CreateBrandResponse;
+import com.burakkolay.rentacar.business.dto.response.get.GetAllBrandsResponse;
+import com.burakkolay.rentacar.business.dto.response.get.GetBrandResponse;
+import com.burakkolay.rentacar.business.dto.response.update.UpdateBrandResponse;
+import com.burakkolay.rentacar.entities.concretes.Brand;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/brands")
 public class BrandsController {
-
-    private final BrandService brandService;
-
-    public BrandsController(BrandService brandService) {
-        this.brandService = brandService;
-    }
-    /*
-    GET         Getirmek
-    POST        Eklemek
-    PUT         Güncellemek
-    DELETE      Silmek
-     */
+    private final BrandService service;
 
     @GetMapping
-    public List<Brand> getAll(){
-        return brandService.getAll();
+    public List<GetAllBrandsResponse> getAll() {
+        return service.getAll();
     }
 
     @GetMapping("/{id}")
-    public Brand getById(@PathVariable int id){
-        return brandService.getById(id);
+    public GetBrandResponse getById(@PathVariable int id) {
+        return service.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Brand add(@RequestBody Brand brand){
-        return brandService.add(brand);
+    public CreateBrandResponse add(@RequestBody CreateBrandRequest request) {
+        return service.add(request);
     }
 
     @PutMapping("/{id}")
-    public Brand update(@PathVariable int id,@RequestBody Brand brand){
-        return brandService.update(id,brand);
+    public UpdateBrandResponse update(@PathVariable int id, @RequestBody UpdateBrandRequest request) {
+        return service.update(id, request);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable int id){
-        brandService.delete(id);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable int id) {
+        service.delete(id);
     }
 }

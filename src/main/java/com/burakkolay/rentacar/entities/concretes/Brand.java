@@ -1,7 +1,7 @@
-package com.burakkolay.rentacar.entities;
-
+package com.burakkolay.rentacar.entities.concretes;
 import jakarta.persistence.*;
 import lombok.*;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,5 +14,7 @@ public class Brand {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
-
+    @OneToMany(mappedBy = "brand")
+    //@JsonBackReference
+    private List<Model> models;
 }
