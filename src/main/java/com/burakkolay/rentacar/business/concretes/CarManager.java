@@ -1,6 +1,7 @@
 package com.burakkolay.rentacar.business.concretes;
 
 import com.burakkolay.rentacar.business.abstracts.CarService;
+import com.burakkolay.rentacar.business.abstracts.ModelService;
 import com.burakkolay.rentacar.business.dto.requests.create.CreateCarRequest;
 import com.burakkolay.rentacar.business.dto.requests.update.UpdateCarRequest;
 import com.burakkolay.rentacar.business.dto.response.create.CreateCarResponse;
@@ -9,6 +10,7 @@ import com.burakkolay.rentacar.business.dto.response.update.UpdateMaintenanceRes
 import com.burakkolay.rentacar.business.dto.response.get.GetAllCarsResponse;
 import com.burakkolay.rentacar.business.dto.response.get.GetCarResponse;
 import com.burakkolay.rentacar.business.dto.response.update.UpdateCarResponse;
+import com.burakkolay.rentacar.entities.concretes.Model;
 import com.burakkolay.rentacar.entities.enums.State;
 import com.burakkolay.rentacar.repository.CarRepository;
 import com.burakkolay.rentacar.entities.concretes.Car;
@@ -24,7 +26,7 @@ import java.util.List;
 public class CarManager implements CarService {
     private final CarRepository repository;
     private final ModelMapper mapper;
-
+    private final ModelService modelService;
 
 
     @Override
@@ -51,14 +53,15 @@ public class CarManager implements CarService {
 
     @Override
     public GetCarResponse getById(int id) {
-        checkIfBrandExists(id);
+        checkIfCarExists(id);
         Car car = repository.findById(id).orElseThrow();
         return mapper.map(car, GetCarResponse.class);
     }
 
     @Override
-    public CreateCarResponse add(CreateCarRequest request) {
+    public CreateCarResponse add(CreateCarRequest request, int modelId) {
         Car car = mapper.map(request, Car.class);
+        car.setModel(mapper.map(modelService.getById(modelId), Model.class));
         repository.save(car);
         return mapper.map(car, CreateCarResponse.class);
     }
@@ -66,7 +69,7 @@ public class CarManager implements CarService {
     @Override
     public UpdateCarResponse update(int id, UpdateCarRequest request) {
 
-        checkIfBrandExists(id);
+        checkIfCarExists(id);
         Car car = repository.findById(id).orElseThrow();
         car.setDailyPrice(request.getDailyPrice());
         car.setState(request.getState());
@@ -76,16 +79,15 @@ public class CarManager implements CarService {
         return mapper.map(car, UpdateCarResponse.class);
     }
 
-
     @Override
     public void delete(int id) {
-        checkIfBrandExists(id);
+        checkIfCarExists(id);
         repository.deleteById(id);
     }
 
     @Override
     public UpdateMaintenanceResponse maintanence(int id) {
-        checkIfBrandExists(id);
+        checkIfCarIsAvailable(id);
         Car car = repository.findById(id).orElseThrow();
         if(car.getState()== State.AVAILABLE)
             car.setState(State.MAINTANCE);
@@ -96,7 +98,7 @@ public class CarManager implements CarService {
 
     @Override
     public UpdateAvailabilityResponse makeAvailable(int id) {
-        checkIfBrandExists(id);
+        checkIfCarExists(id);
         Car car = repository.findById(id).orElseThrow();
         if(car.getState()!= State.AVAILABLE)
             car.setState(State.AVAILABLE);
@@ -107,7 +109,20 @@ public class CarManager implements CarService {
 
     // Business rules
 
-    private void checkIfBrandExists(int id) {
-        if (!repository.existsById(id)) throw new RuntimeException("No such a brand!");
+    private void checkIfCarExists(int id) {
+        if (!repository.existsById(id)) throw new RuntimeException("No such a car!");
+    }
+    public void checkIfCarIsAvailable(int carId){
+        checkIfCarExists(carId);
+        checkIfCarInMaintenance(carId);
+        checkIfCarRented(carId);
+    }
+    private void checkIfCarInMaintenance(int carId){
+        Car car = repository.findById(carId).orElseThrow();
+        if(car.getState()==State.MAINTANCE) throw new RuntimeException("Car is already in maintenance.");
+    }
+    private void checkIfCarRented(int carId){
+        Car car = repository.findById(carId).orElseThrow();
+        if(car.getState()==State.RENTED) throw new RuntimeException("Car is already rented.");
     }
 }

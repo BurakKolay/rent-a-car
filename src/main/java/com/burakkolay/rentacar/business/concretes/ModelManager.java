@@ -1,5 +1,6 @@
 package com.burakkolay.rentacar.business.concretes;
 
+import com.burakkolay.rentacar.business.abstracts.BrandService;
 import com.burakkolay.rentacar.business.abstracts.ModelService;
 import com.burakkolay.rentacar.business.dto.requests.create.CreateModelRequest;
 import com.burakkolay.rentacar.business.dto.requests.update.UpdateModelRequest;
@@ -7,6 +8,7 @@ import com.burakkolay.rentacar.business.dto.response.create.CreateModelResponse;
 import com.burakkolay.rentacar.business.dto.response.get.GetAllModelsResponse;
 import com.burakkolay.rentacar.business.dto.response.get.GetModelResponse;
 import com.burakkolay.rentacar.business.dto.response.update.UpdateModelResponse;
+import com.burakkolay.rentacar.entities.concretes.Brand;
 import com.burakkolay.rentacar.entities.concretes.Model;
 import com.burakkolay.rentacar.repository.ModelRepository;
 import lombok.AllArgsConstructor;
@@ -20,6 +22,7 @@ import java.util.List;
 public class ModelManager implements ModelService {
     private final ModelRepository repository;
     private final ModelMapper mapper;
+    private final BrandService brandService;
 
     @Override
     public List<GetAllModelsResponse> getAll() {
@@ -39,9 +42,10 @@ public class ModelManager implements ModelService {
     }
 
     @Override
-    public CreateModelResponse add(CreateModelRequest request) {
+    public CreateModelResponse add(CreateModelRequest request,int brandId) {
         Model model = mapper.map(request, Model.class);
         model.setId(0);
+        model.setBrand(mapper.map(brandService.getById(brandId), Brand.class));
         repository.save(model);
         return mapper.map(model, CreateModelResponse.class);
     }
@@ -54,9 +58,8 @@ public class ModelManager implements ModelService {
         model.setName(request.getName());
         repository.save(model);
         return mapper.map(model, UpdateModelResponse.class);
+
     }
-
-
 
     @Override
     public void delete(int id) {

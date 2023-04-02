@@ -15,7 +15,7 @@ public interface CarService {
     List<GetAllCarsResponse> getAll();
     List<GetAllCarsResponse> getAllByState(String state);
     GetCarResponse getById(int id);
-    CreateCarResponse add(CreateCarRequest request);
+    CreateCarResponse add(CreateCarRequest request, int modelId);
     UpdateCarResponse update(int id, UpdateCarRequest request);
     void delete(int id);
     UpdateMaintenanceResponse maintanence(int id);

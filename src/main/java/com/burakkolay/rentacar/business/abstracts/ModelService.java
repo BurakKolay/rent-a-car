@@ -12,7 +12,7 @@ import java.util.List;
 public interface ModelService {
     List<GetAllModelsResponse> getAll();
     GetModelResponse getById(int id);
-    CreateModelResponse add(CreateModelRequest request);
+    CreateModelResponse add(CreateModelRequest request, int brandId);
     UpdateModelResponse update(int id, UpdateModelRequest request);
     void delete(int id);
 }

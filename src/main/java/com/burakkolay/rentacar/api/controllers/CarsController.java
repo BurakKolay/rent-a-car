@@ -25,6 +25,7 @@ public class CarsController {
     public List<GetAllCarsResponse> getAll() {
         return service.getAll();
     }
+
     @GetMapping("/get/{state}")
     public List<GetAllCarsResponse> getAllbyState(@PathVariable String state){
         return service.getAllByState(state);
@@ -45,10 +46,10 @@ public class CarsController {
         return service.getById(id);
     }
 
-    @PostMapping
+    @PostMapping("/{modelId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateCarResponse add(@RequestBody CreateCarRequest request) {
-        return service.add(request);
+    public CreateCarResponse add(@RequestBody CreateCarRequest request,@RequestParam int modelId) {
+        return service.add(request, modelId);
     }
 
     @PutMapping("/{id}")

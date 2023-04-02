@@ -29,10 +29,10 @@ public class ModelsController {
         return service.getById(id);
     }
 
-    @PostMapping
+    @PostMapping("/{brandId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateModelResponse add(@RequestBody CreateModelRequest request) {
-        return service.add(request);
+    public CreateModelResponse add(@RequestBody CreateModelRequest request,@PathVariable int brandId) {
+        return service.add(request,brandId);
     }
 
     @PutMapping("/{id}")
