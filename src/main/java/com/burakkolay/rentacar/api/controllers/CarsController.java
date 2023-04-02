@@ -6,7 +6,9 @@ import com.burakkolay.rentacar.business.dto.requests.update.UpdateCarRequest;
 import com.burakkolay.rentacar.business.dto.response.create.CreateCarResponse;
 import com.burakkolay.rentacar.business.dto.response.get.GetAllCarsResponse;
 import com.burakkolay.rentacar.business.dto.response.get.GetCarResponse;
+import com.burakkolay.rentacar.business.dto.response.update.UpdateAvailabilityResponse;
 import com.burakkolay.rentacar.business.dto.response.update.UpdateCarResponse;
+import com.burakkolay.rentacar.business.dto.response.update.UpdateMaintenanceResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,20 @@ public class CarsController {
     @GetMapping
     public List<GetAllCarsResponse> getAll() {
         return service.getAll();
+    }
+    @GetMapping("/get/{state}")
+    public List<GetAllCarsResponse> getAllbyState(@PathVariable String state){
+        return service.getAllByState(state);
+    }
+    @PutMapping("/update-maintenance/{id}")
+    public UpdateMaintenanceResponse updateMaintenance(@PathVariable int id){
+        return service.maintanence(id);
+
+    }
+
+    @PutMapping("/update-availability/{id}")
+    public UpdateAvailabilityResponse updateAvailability(@PathVariable int id){
+        return service.makeAvailable(id);
     }
 
     @GetMapping("/{id}")
