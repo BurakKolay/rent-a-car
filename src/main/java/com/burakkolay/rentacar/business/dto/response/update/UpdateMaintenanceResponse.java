@@ -8,15 +8,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UpdateMaintenanceResponse {
-    private int id;
-    private int modelYear;
-    private String plate;
-    @Enumerated(EnumType.STRING)
-    private State state;
-    private double dailyPrice;
+    private int carId;
 }
