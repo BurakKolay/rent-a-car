@@ -1,13 +1,13 @@
 package com.burakkolay.rentacar.api.controllers;
 
+
 import com.burakkolay.rentacar.business.abstracts.BrandService;
 import com.burakkolay.rentacar.business.dto.requests.create.CreateBrandRequest;
 import com.burakkolay.rentacar.business.dto.requests.update.UpdateBrandRequest;
-import com.burakkolay.rentacar.business.dto.response.create.CreateBrandResponse;
-import com.burakkolay.rentacar.business.dto.response.get.GetAllBrandsResponse;
-import com.burakkolay.rentacar.business.dto.response.get.GetBrandResponse;
-import com.burakkolay.rentacar.business.dto.response.update.UpdateBrandResponse;
-import com.burakkolay.rentacar.entities.concretes.Brand;
+import com.burakkolay.rentacar.business.dto.responses.create.CreateBrandResponse;
+import com.burakkolay.rentacar.business.dto.responses.get.GetAllBrandsResponse;
+import com.burakkolay.rentacar.business.dto.responses.get.GetBrandResponse;
+import com.burakkolay.rentacar.business.dto.responses.update.UpdateBrandResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
