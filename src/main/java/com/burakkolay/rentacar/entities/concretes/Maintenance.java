@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -19,12 +20,12 @@ public class Maintenance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @CreationTimestamp
-    @Column(nullable = false)
-    private Timestamp createdDate;
-    @UpdateTimestamp
-    private Timestamp lastModifiedDate;
+    private String information;
+    private boolean isCompleted;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+
     @ManyToOne
+    @JoinColumn(name = "car_id")
     private Car car;
-    private boolean state;
 }
