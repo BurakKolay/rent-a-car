@@ -1,12 +1,13 @@
 package com.burakkolay.rentacar.api.controllers;
 
+
 import com.burakkolay.rentacar.business.abstracts.ModelService;
 import com.burakkolay.rentacar.business.dto.requests.create.CreateModelRequest;
 import com.burakkolay.rentacar.business.dto.requests.update.UpdateModelRequest;
-import com.burakkolay.rentacar.business.dto.response.create.CreateModelResponse;
-import com.burakkolay.rentacar.business.dto.response.get.GetAllModelsResponse;
-import com.burakkolay.rentacar.business.dto.response.get.GetModelResponse;
-import com.burakkolay.rentacar.business.dto.response.update.UpdateModelResponse;
+import com.burakkolay.rentacar.business.dto.responses.create.CreateModelResponse;
+import com.burakkolay.rentacar.business.dto.responses.get.GetAllModelsResponse;
+import com.burakkolay.rentacar.business.dto.responses.get.GetModelResponse;
+import com.burakkolay.rentacar.business.dto.responses.update.UpdateModelResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -29,10 +30,10 @@ public class ModelsController {
         return service.getById(id);
     }
 
-    @PostMapping("/{brandId}")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateModelResponse add(@RequestBody CreateModelRequest request,@PathVariable int brandId) {
-        return service.add(request,brandId);
+    public CreateModelResponse add(@RequestBody CreateModelRequest request) {
+        return service.add(request);
     }
 
     @PutMapping("/{id}")

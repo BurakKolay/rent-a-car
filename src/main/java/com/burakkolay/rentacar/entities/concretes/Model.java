@@ -20,9 +20,8 @@ public class Model {
     private int id;
     private String name;
     @ManyToOne
-    @JoinColumn(name = "brand_id")
 //    @JsonManagedReference
-    private Brand brand;
+    private Brand brand; // brandId
     @OneToMany(mappedBy = "model")
 //    @JsonBackReference
     private List<Car> cars;
