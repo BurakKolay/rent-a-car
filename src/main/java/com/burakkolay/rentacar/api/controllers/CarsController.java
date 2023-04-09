@@ -1,14 +1,13 @@
 package com.burakkolay.rentacar.api.controllers;
 
+
 import com.burakkolay.rentacar.business.abstracts.CarService;
 import com.burakkolay.rentacar.business.dto.requests.create.CreateCarRequest;
 import com.burakkolay.rentacar.business.dto.requests.update.UpdateCarRequest;
-import com.burakkolay.rentacar.business.dto.response.create.CreateCarResponse;
-import com.burakkolay.rentacar.business.dto.response.get.GetAllCarsResponse;
-import com.burakkolay.rentacar.business.dto.response.get.GetCarResponse;
-import com.burakkolay.rentacar.business.dto.response.update.UpdateAvailabilityResponse;
-import com.burakkolay.rentacar.business.dto.response.update.UpdateCarResponse;
-import com.burakkolay.rentacar.business.dto.response.update.UpdateMaintenanceResponse;
+import com.burakkolay.rentacar.business.dto.responses.create.CreateCarResponse;
+import com.burakkolay.rentacar.business.dto.responses.get.GetAllCarsResponse;
+import com.burakkolay.rentacar.business.dto.responses.get.GetCarResponse;
+import com.burakkolay.rentacar.business.dto.responses.update.UpdateCarResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,23 +21,8 @@ public class CarsController {
     private final CarService service;
 
     @GetMapping
-    public List<GetAllCarsResponse> getAll() {
-        return service.getAll();
-    }
-
-    @GetMapping("/get/{state}")
-    public List<GetAllCarsResponse> getAllbyState(@PathVariable String state){
-        return service.getAllByState(state);
-    }
-    @PutMapping("/update-maintenance/{id}")
-    public UpdateMaintenanceResponse updateMaintenance(@PathVariable int id){
-        return service.maintanence(id);
-
-    }
-
-    @PutMapping("/update-availability/{id}")
-    public UpdateAvailabilityResponse updateAvailability(@PathVariable int id){
-        return service.makeAvailable(id);
+    public List<GetAllCarsResponse> getAll(@RequestParam(defaultValue = "true") boolean includeMaintenance) {
+        return service.getAll(includeMaintenance);
     }
 
     @GetMapping("/{id}")
@@ -46,10 +30,10 @@ public class CarsController {
         return service.getById(id);
     }
 
-    @PostMapping("/{modelId}")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateCarResponse add(@RequestBody CreateCarRequest request,@RequestParam int modelId) {
-        return service.add(request, modelId);
+    public CreateCarResponse add(@RequestBody CreateCarRequest request) {
+        return service.add(request);
     }
 
     @PutMapping("/{id}")
@@ -62,4 +46,5 @@ public class CarsController {
     public void delete(@PathVariable int id) {
         service.delete(id);
     }
+
 }
