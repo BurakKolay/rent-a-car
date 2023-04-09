@@ -1,4 +1,4 @@
-package com.burakkolay.rentacar.business.dto.requests.create;
+package com.burakkolay.rentacar.business.dto.responses.get;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,8 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateMaintenanceRequest {
-    private int carId;
-    private String information;
+public class GetModelResponse {
+    private int id;
+    private int brandId;
+    private String name;
 }
-

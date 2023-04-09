@@ -1,4 +1,4 @@
-package com.burakkolay.rentacar.business.dto.response.create;
+package com.burakkolay.rentacar.business.dto.responses.create;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,10 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateBrandResponse {
+public class CreateModelResponse {
     private int id;
+    private int brandId;
     private String name;
 }
+
+

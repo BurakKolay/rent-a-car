@@ -1,15 +1,16 @@
-package com.burakkolay.rentacar.business.dto.response.get;
+package com.burakkolay.rentacar.business.dto.responses.get;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
 @Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class GetAllModelsResponse {
     private int id;
+    private int brandId;
     private String name;
 }

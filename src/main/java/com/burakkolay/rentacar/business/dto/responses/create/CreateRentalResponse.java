@@ -1,4 +1,4 @@
-package com.burakkolay.rentacar.business.dto.requests.update;
+package com.burakkolay.rentacar.business.dto.responses.create;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,10 +11,11 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateMaintenanceRequest {
+public class CreateRentalResponse {
+    private int id;
     private int carId;
-    private String information;
-    private boolean isCompleted;
+    private double dailyPrice;
+    private int rentedForDays;
+    private double totalPrice;
     private LocalDateTime startDate;
-    private LocalDateTime endDate;
 }

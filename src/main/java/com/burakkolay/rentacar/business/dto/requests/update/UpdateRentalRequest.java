@@ -7,14 +7,13 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateMaintenanceRequest {
+public class UpdateRentalRequest {
     private int carId;
-    private String information;
-    private boolean isCompleted;
+    private double dailyPrice;
+    private int rentedForDays;
     private LocalDateTime startDate;
-    private LocalDateTime endDate;
 }

@@ -5,12 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateMaintenanceRequest {
+public class CreateRentalRequest {
     private int carId;
-    private String information;
+    private double dailyPrice;
+    private int rentedForDays;
 }
-
