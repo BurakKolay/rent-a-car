@@ -1,6 +1,7 @@
 package com.burakkolay.rentacar.business.concretes;
 
 import com.burakkolay.rentacar.business.abstracts.CarService;
+import com.burakkolay.rentacar.business.abstracts.PaymentService;
 import com.burakkolay.rentacar.business.abstracts.RentalService;
 import com.burakkolay.rentacar.business.dto.requests.create.CreateRentalRequest;
 import com.burakkolay.rentacar.business.dto.requests.update.UpdateRentalRequest;
@@ -8,6 +9,7 @@ import com.burakkolay.rentacar.business.dto.responses.create.CreateRentalRespons
 import com.burakkolay.rentacar.business.dto.responses.get.GetAllRentalsResponse;
 import com.burakkolay.rentacar.business.dto.responses.get.GetRentalResponse;
 import com.burakkolay.rentacar.business.dto.responses.update.UpdateRentalResponse;
+import com.burakkolay.rentacar.common.dto.CreateRentalPaymentRequest;
 import com.burakkolay.rentacar.entities.concretes.Rental;
 import com.burakkolay.rentacar.entities.enums.State;
 import com.burakkolay.rentacar.repository.RentalRepository;
@@ -24,6 +26,7 @@ public class RentalManager implements RentalService {
     private final RentalRepository repository;
     private final ModelMapper mapper;
     private final CarService carService;
+    private final PaymentService paymentService;
 
     @Override
     public List<GetAllRentalsResponse> getAll() {
@@ -52,6 +55,12 @@ public class RentalManager implements RentalService {
         rental.setId(0);
         rental.setTotalPrice(getTotalPrice(rental));
         rental.setStartDate(LocalDateTime.now());
+
+        CreateRentalPaymentRequest paymentRequest = new CreateRentalPaymentRequest();
+        mapper.map(request.getPaymentRequest(),paymentRequest);
+        paymentRequest.setPrice(getTotalPrice(rental));
+        paymentService.processRentalPayment(paymentRequest);
+
         repository.save(rental);
         carService.changeState(rental.getCar().getId(), State.RENTED);
         CreateRentalResponse response = mapper.map(rental, CreateRentalResponse.class);
