@@ -49,10 +49,4 @@ public class ModelsController {
     public void delete(@PathVariable int id) {
         service.delete(id);
     }
-
-    @GetMapping("/deneme")
-    public ModelAndView showStaffUpdateForm(){
-        ModelAndView mav = new ModelAndView("deneme");
-        return mav;
-    }
 }
