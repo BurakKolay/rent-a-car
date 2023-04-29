@@ -8,6 +8,7 @@ import com.burakkolay.rentacar.business.dto.responses.create.CreateModelResponse
 import com.burakkolay.rentacar.business.dto.responses.get.GetAllModelsResponse;
 import com.burakkolay.rentacar.business.dto.responses.get.GetModelResponse;
 import com.burakkolay.rentacar.business.dto.responses.update.UpdateModelResponse;
+import com.burakkolay.rentacar.business.rules.ModelBusinessRules;
 import com.burakkolay.rentacar.entities.concretes.Model;
 import com.burakkolay.rentacar.repository.ModelRepository;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,7 @@ import java.util.List;
 public class ModelManager implements ModelService {
     private final ModelRepository repository;
     private final ModelMapper mapper;
+    private final ModelBusinessRules rules;
 
     @Override
     public List<GetAllModelsResponse> getAll() {
@@ -35,7 +37,7 @@ public class ModelManager implements ModelService {
 
     @Override
     public GetModelResponse getById(int id) {
-        checkIfModelExists(id);
+        rules.checkIfModelExists(id);
         Model model = repository.findById(id).orElseThrow();
         GetModelResponse response = mapper.map(model, GetModelResponse.class);
 
@@ -54,7 +56,7 @@ public class ModelManager implements ModelService {
 
     @Override
     public UpdateModelResponse update(int id, UpdateModelRequest request) {
-        checkIfModelExists(id);
+        rules.checkIfModelExists(id);
         Model model = mapper.map(request, Model.class);
         model.setId(id);
         repository.save(model);
@@ -65,13 +67,7 @@ public class ModelManager implements ModelService {
 
     @Override
     public void delete(int id) {
-        checkIfModelExists(id);
+        rules.checkIfModelExists(id);
         repository.deleteById(id);
-    }
-
-    private void checkIfModelExists(int id) {
-        if(!repository.existsById(id)){
-            throw new RuntimeException("Böyle bir model bulunamadı!");
-        }
     }
 }

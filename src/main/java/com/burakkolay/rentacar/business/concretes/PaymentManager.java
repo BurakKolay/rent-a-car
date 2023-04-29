@@ -8,6 +8,7 @@ import com.burakkolay.rentacar.business.dto.responses.create.CreatePaymentRespon
 import com.burakkolay.rentacar.business.dto.responses.get.GetAllPaymentsResponse;
 import com.burakkolay.rentacar.business.dto.responses.get.GetPaymentResponse;
 import com.burakkolay.rentacar.business.dto.responses.update.UpdatePaymentResponse;
+import com.burakkolay.rentacar.business.rules.PaymentBusinessRules;
 import com.burakkolay.rentacar.common.dto.CreateRentalPaymentRequest;
 import com.burakkolay.rentacar.entities.concretes.Payment;
 import com.burakkolay.rentacar.repository.PaymentRepository;
@@ -23,6 +24,7 @@ public class PaymentManager implements PaymentService {
     private final PaymentRepository repository;
     private final ModelMapper mapper;
     private final PosService posService;
+    private final PaymentBusinessRules rules;
 
     @Override
     public List<GetAllPaymentsResponse> getAll() {
@@ -37,7 +39,7 @@ public class PaymentManager implements PaymentService {
 
     @Override
     public GetPaymentResponse getById(int id) {
-        checkIfPaymentExists(id);
+        rules.checkIfPaymentExists(id);
         Payment payment = repository.findById(id).orElseThrow();
         GetPaymentResponse response = mapper.map(payment, GetPaymentResponse.class);
 
@@ -46,7 +48,7 @@ public class PaymentManager implements PaymentService {
 
     @Override
     public CreatePaymentResponse add(CreatePaymentRequest request) {
-        checkIfCardExists(request.getCardNumber());
+        rules.checkIfCardExists(request.getCardNumber());
         Payment payment = mapper.map(request, Payment.class);
         payment.setId(0);
         repository.save(payment);
@@ -57,8 +59,8 @@ public class PaymentManager implements PaymentService {
 
     @Override
     public UpdatePaymentResponse update(int id, UpdatePaymentRequest request) {
-        checkIfPaymentExists(id);
-        Payment payment = mapper.map(request,Payment.class);
+        rules.checkIfPaymentExists(id);
+        Payment payment = mapper.map(request, Payment.class);
         payment.setId(id);
         repository.save(payment);
         UpdatePaymentResponse response = mapper.map(payment, UpdatePaymentResponse.class);
@@ -68,47 +70,18 @@ public class PaymentManager implements PaymentService {
 
     @Override
     public void delete(int id) {
-        checkIfPaymentExists(id);
+        rules.checkIfPaymentExists(id);
         repository.deleteById(id);
     }
 
     @Override
     public void processRentalPayment(CreateRentalPaymentRequest request) {
-        checkIfPaymentIsValid(request);
+        rules.checkIfPaymentIsValid(request);
         Payment payment = repository.findByCardNumber(request.getCardNumber());
-        checkIfBalanceIdEnough(payment.getBalance(), request.getPrice());
+        rules.checkIfBalanceIdEnough(payment.getBalance(), request.getPrice());
         posService.pay(); // fake pos service
         payment.setBalance(payment.getBalance() - request.getPrice());
         repository.save(payment);
     }
 
-    private void checkIfPaymentExists(int id){
-        if(!repository.existsById(id)){
-            throw new RuntimeException("Ödeme bilgisi bulunamadı.");
-        }
-    }
-
-    private void checkIfBalanceIdEnough(double balance, double price) {
-        if( balance < price){
-            throw new RuntimeException("Yetersiz bakiye.");
-        }
-    }
-
-    private void checkIfCardExists(String cardNumber){
-        if(repository.existsByCardNumber(cardNumber)){
-            throw new RuntimeException("Kart numarası zaten kayıtlı.");
-        }
-    }
-
-    private void checkIfPaymentIsValid(CreateRentalPaymentRequest request) {
-        if(!repository.existsByCardNumberAndCardHolderAndCardExpirationYearAndCardExpirationMonthAndCardCvv(
-                request.getCardNumber(),
-                request.getCardHolder(),
-                request.getCardExpirationYear(),
-                request.getCardExpirationMonth(),
-                request.getCardCvv()
-        )){
-            throw new RuntimeException("Kart bilgileriniz hatalı.");
-        }
-    }
 }

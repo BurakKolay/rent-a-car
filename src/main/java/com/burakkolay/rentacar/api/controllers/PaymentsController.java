@@ -35,7 +35,7 @@ public class PaymentsController {
     }
 
     @PutMapping("/{id}")
-    public UpdatePaymentResponse update(@PathVariable int id,@Valid @RequestBody UpdatePaymentRequest request) {
+    public UpdatePaymentResponse update(@PathVariable int id, @Valid @RequestBody UpdatePaymentRequest request) {
         return service.update(id, request);
     }
 

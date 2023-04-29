@@ -1,4 +1,5 @@
 package com.burakkolay.rentacar.business.dto.responses.update;
+
 import com.burakkolay.rentacar.entities.enums.State;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

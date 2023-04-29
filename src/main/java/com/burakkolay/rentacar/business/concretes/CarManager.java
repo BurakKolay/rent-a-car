@@ -8,6 +8,7 @@ import com.burakkolay.rentacar.business.dto.responses.create.CreateCarResponse;
 import com.burakkolay.rentacar.business.dto.responses.get.GetAllCarsResponse;
 import com.burakkolay.rentacar.business.dto.responses.get.GetCarResponse;
 import com.burakkolay.rentacar.business.dto.responses.update.UpdateCarResponse;
+import com.burakkolay.rentacar.business.rules.CarBusinessRules;
 import com.burakkolay.rentacar.entities.concretes.Car;
 import com.burakkolay.rentacar.entities.enums.State;
 import com.burakkolay.rentacar.repository.CarRepository;
@@ -22,6 +23,7 @@ import java.util.List;
 public class CarManager implements CarService {
     private final CarRepository repository;
     private final ModelMapper mapper;
+    private final CarBusinessRules rules;
 
     @Override
     public List<GetAllCarsResponse> getAll(boolean includeMaintenance) {
@@ -36,7 +38,7 @@ public class CarManager implements CarService {
 
     @Override
     public GetCarResponse getById(int id) {
-        checkIfExistsById(id);
+        rules.checkIfExistsById(id);
         Car car = repository.findById(id).orElseThrow();
         GetCarResponse response = mapper.map(car, GetCarResponse.class);
 
@@ -56,7 +58,7 @@ public class CarManager implements CarService {
 
     @Override
     public UpdateCarResponse update(int id, UpdateCarRequest request) {
-        checkIfExistsById(id);
+        rules.checkIfExistsById(id);
         Car car = mapper.map(request, Car.class);
         car.setId(id);
         repository.save(car);
@@ -67,7 +69,7 @@ public class CarManager implements CarService {
 
     @Override
     public void delete(int id) {
-        checkIfExistsById(id);
+        rules.checkIfExistsById(id);
         repository.deleteById(id);
     }
 
@@ -78,11 +80,6 @@ public class CarManager implements CarService {
         repository.save(car);
     }
 
-    private void checkIfExistsById(int id) {
-        if (!repository.existsById(id)) {
-            throw new RuntimeException("Böyle bir araç bulunamadı!");
-        }
-    }
 
     private List<Car> filterCarsByMaintenanceState(boolean includeMaintenance) {
         if (includeMaintenance) {

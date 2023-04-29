@@ -9,12 +9,15 @@ import com.burakkolay.rentacar.business.dto.responses.get.GetAllModelsResponse;
 import com.burakkolay.rentacar.business.dto.responses.get.GetModelResponse;
 import com.burakkolay.rentacar.business.dto.responses.update.UpdateModelResponse;
 import lombok.AllArgsConstructor;
+import lombok.val;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-@RestController
+@Controller
 @AllArgsConstructor
 @RequestMapping("/api/models")
 public class ModelsController {
@@ -45,5 +48,11 @@ public class ModelsController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
         service.delete(id);
+    }
+
+    @GetMapping("/deneme")
+    public ModelAndView showStaffUpdateForm(){
+        ModelAndView mav = new ModelAndView("deneme");
+        return mav;
     }
 }

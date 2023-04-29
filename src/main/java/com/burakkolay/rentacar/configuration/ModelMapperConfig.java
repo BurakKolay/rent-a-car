@@ -1,6 +1,5 @@
 package com.burakkolay.rentacar.configuration;
 
-import lombok.Builder;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ModelMapperConfig {
     @Bean
-    public ModelMapper getModelMapper(){
+    public ModelMapper getModelMapper() {
         return new ModelMapper();
     }
 }
