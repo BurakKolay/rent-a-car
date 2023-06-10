@@ -10,7 +10,7 @@ import com.burakkolay.rentacar.business.dto.responses.get.GetPaymentResponse;
 import com.burakkolay.rentacar.business.dto.responses.update.UpdatePaymentResponse;
 import com.burakkolay.rentacar.business.rules.PaymentBusinessRules;
 import com.burakkolay.rentacar.common.dto.CreateRentalPaymentRequest;
-import com.burakkolay.rentacar.entities.concretes.Payment;
+import com.burakkolay.rentacar.entities.Payment;
 import com.burakkolay.rentacar.repository.PaymentRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;

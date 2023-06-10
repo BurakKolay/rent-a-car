@@ -10,7 +10,7 @@ import com.burakkolay.rentacar.business.dto.responses.get.GetAllMaintenancesResp
 import com.burakkolay.rentacar.business.dto.responses.get.GetMaintenanceResponse;
 import com.burakkolay.rentacar.business.dto.responses.update.UpdateMaintenanceResponse;
 import com.burakkolay.rentacar.business.rules.MaintenanceBusinessRules;
-import com.burakkolay.rentacar.entities.concretes.Maintenance;
+import com.burakkolay.rentacar.entities.Maintenance;
 import com.burakkolay.rentacar.entities.enums.State;
 import com.burakkolay.rentacar.repository.MaintenanceRepository;
 import lombok.AllArgsConstructor;

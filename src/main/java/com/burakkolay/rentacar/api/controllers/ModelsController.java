@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-@Controller
+@RestController
 @AllArgsConstructor
 @RequestMapping("/api/models")
 public class ModelsController {

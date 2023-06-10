@@ -1,6 +1,6 @@
 package com.burakkolay.rentacar.repository;
 
-import com.burakkolay.rentacar.entities.concretes.Invoice;
+import com.burakkolay.rentacar.entities.Invoice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

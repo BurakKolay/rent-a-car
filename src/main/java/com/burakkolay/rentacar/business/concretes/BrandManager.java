@@ -9,10 +9,12 @@ import com.burakkolay.rentacar.business.dto.responses.get.GetAllBrandsResponse;
 import com.burakkolay.rentacar.business.dto.responses.get.GetBrandResponse;
 import com.burakkolay.rentacar.business.dto.responses.update.UpdateBrandResponse;
 import com.burakkolay.rentacar.business.rules.BrandBusinessRules;
-import com.burakkolay.rentacar.entities.concretes.Brand;
+import com.burakkolay.rentacar.entities.Brand;
 import com.burakkolay.rentacar.repository.BrandRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +27,7 @@ public class BrandManager implements BrandService {
     private final BrandBusinessRules rules;
 
     @Override
+    @Cacheable(value = "brand_list")
     public List<GetAllBrandsResponse> getAll() {
         List<Brand> brands = repository.findAll();
         List<GetAllBrandsResponse> response = brands
@@ -40,11 +43,11 @@ public class BrandManager implements BrandService {
         rules.checkIfBrandExists(id);
         Brand brand = repository.findById(id).orElseThrow();
         GetBrandResponse response = mapper.map(brand, GetBrandResponse.class);
-
         return response;
     }
 
     @Override
+    @CacheEvict(value = "brand_list",allEntries = true)
     public CreateBrandResponse add(CreateBrandRequest request) {
         rules.checkIfBrandExistsByName(request.getName());
         Brand brand = mapper.map(request, Brand.class);

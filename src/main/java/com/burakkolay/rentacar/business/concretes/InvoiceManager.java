@@ -9,7 +9,7 @@ import com.burakkolay.rentacar.business.dto.responses.get.GetAllInvoicesResponse
 import com.burakkolay.rentacar.business.dto.responses.get.GetInvoiceResponse;
 import com.burakkolay.rentacar.business.dto.responses.update.UpdateInvoiceResponse;
 import com.burakkolay.rentacar.business.rules.InvoiceBusinessRules;
-import com.burakkolay.rentacar.entities.concretes.Invoice;
+import com.burakkolay.rentacar.entities.Invoice;
 import com.burakkolay.rentacar.repository.InvoiceRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;

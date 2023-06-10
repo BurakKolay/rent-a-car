@@ -1,4 +1,4 @@
-package com.burakkolay.rentacar.entities.concretes;
+package com.burakkolay.rentacar.entities;
 
 import com.burakkolay.rentacar.entities.enums.State;
 import jakarta.persistence.*;

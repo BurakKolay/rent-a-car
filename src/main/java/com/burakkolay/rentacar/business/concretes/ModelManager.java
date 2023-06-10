@@ -9,7 +9,7 @@ import com.burakkolay.rentacar.business.dto.responses.get.GetAllModelsResponse;
 import com.burakkolay.rentacar.business.dto.responses.get.GetModelResponse;
 import com.burakkolay.rentacar.business.dto.responses.update.UpdateModelResponse;
 import com.burakkolay.rentacar.business.rules.ModelBusinessRules;
-import com.burakkolay.rentacar.entities.concretes.Model;
+import com.burakkolay.rentacar.entities.Model;
 import com.burakkolay.rentacar.repository.ModelRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;

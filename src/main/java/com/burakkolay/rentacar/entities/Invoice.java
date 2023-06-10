@@ -1,4 +1,4 @@
-package com.burakkolay.rentacar.entities.concretes;
+package com.burakkolay.rentacar.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.burakkolay.rentacar.entities.concretes;
+package com.burakkolay.rentacar.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,19 +9,18 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "rentals")
-public class Rental {
+@NoArgsConstructor
+@AllArgsConstructor
+public class Maintenance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private double dailyPrice;
-    private int rentedForDays;
-    private double totalPrice;
+    private String information;
+    private boolean isCompleted;
     private LocalDateTime startDate;
+    private LocalDateTime endDate;
 
     @ManyToOne
     @JoinColumn(name = "car_id")

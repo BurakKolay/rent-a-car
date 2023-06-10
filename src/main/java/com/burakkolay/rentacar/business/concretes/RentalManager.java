@@ -14,7 +14,7 @@ import com.burakkolay.rentacar.business.dto.responses.get.GetRentalResponse;
 import com.burakkolay.rentacar.business.dto.responses.update.UpdateRentalResponse;
 import com.burakkolay.rentacar.business.rules.RentalBusinessRules;
 import com.burakkolay.rentacar.common.dto.CreateRentalPaymentRequest;
-import com.burakkolay.rentacar.entities.concretes.Rental;
+import com.burakkolay.rentacar.entities.Rental;
 import com.burakkolay.rentacar.entities.enums.State;
 import com.burakkolay.rentacar.repository.RentalRepository;
 import lombok.AllArgsConstructor;
